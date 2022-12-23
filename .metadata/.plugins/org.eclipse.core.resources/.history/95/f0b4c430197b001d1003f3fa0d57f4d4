@@ -1,0 +1,396 @@
+package views;
+
+import java.awt.EventQueue;
+import java.sql.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
+import bookRepository.BookRepository;
+import net.proteanit.sql.DbUtils;
+
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.rmi.Naming;
+
+public class JavaCrud {
+
+	private JFrame frame;
+	private JTextField txtbname;
+	private JTextField txtedition;
+	private JTextField txtprice;
+	private JTable table;
+	private JTextField txtBId;
+
+//	private Connection con ; 
+//	private PreparedStatement pst ;	
+//	private ResultSet res ; 
+	private JTextField txtauthor;
+	
+		
+	public JavaCrud() {
+		initialize();
+		
+		table_load();
+	}
+	
+	
+	// connection with data base  
+//	public void Connect()
+//    {
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/javacrud", "root","");
+//        }
+//        catch (ClassNotFoundException ex)
+//        {
+//          ex.printStackTrace();
+//        }
+//        catch (SQLException ex)
+//        {
+//            ex.printStackTrace();
+//        }
+// 
+//    }
+	   
+	
+	
+	// load  table 
+	
+	public void table_load() {
+		try {
+//			pst = con.prepareStatement("select * from book");
+//			res = pst.executeQuery();
+			
+			BookRepository service = (BookRepository) Naming.lookup("rmi://localhost:1096/bookservices");
+			
+			table.setModel(DbUtils.resultSetToTableModel(service.GetAll()));
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JavaCrud window = new JavaCrud();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Bookman Old Style", Font.BOLD, 16));
+		frame.setBounds(100, 100, 901, 508);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Book Shop ");
+		lblNewLabel.setBackground(new Color(0, 0, 128));
+		lblNewLabel.setForeground(new Color(0, 0, 0));
+		lblNewLabel.setFont(new Font("Pristina", Font.BOLD, 50));
+		lblNewLabel.setBounds(330, 10, 265, 66);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Registation ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 128)));
+		panel.setBounds(39, 161, 379, 240);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Book Name ");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1.setBounds(22, 38, 107, 30);
+		panel.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Ediction ");
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1_1.setBounds(22, 142, 80, 30);
+		panel.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_2 = new JLabel("Price ");
+		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1_2.setBounds(22, 185, 80, 30);
+		panel.add(lblNewLabel_1_2);
+		
+		txtbname = new JTextField();
+		txtbname.setBounds(139, 41, 215, 30);
+		panel.add(txtbname);
+		txtbname.setColumns(10);
+		
+		txtedition = new JTextField();
+		txtedition.setColumns(10);
+		txtedition.setBounds(139, 145, 215, 30);
+		panel.add(txtedition);
+		
+		txtprice = new JTextField();
+		txtprice.setColumns(10);
+		txtprice.setBounds(139, 188, 215, 30);
+		panel.add(txtprice);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("Author");
+		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1_1_1.setBounds(22, 88, 80, 30);
+		panel.add(lblNewLabel_1_1_1);
+		
+		txtauthor = new JTextField();
+		txtauthor.setColumns(10);
+		txtauthor.setBounds(139, 91, 215, 30);
+		panel.add(txtauthor);
+		
+		
+		
+		
+		
+		
+		// -  add Methode 
+		JButton btn_Add = new JButton("Save");
+		btn_Add.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				String bname,edition,price ,author;
+				bname = txtbname.getText();
+				edition = txtedition.getText();
+				price = txtprice.getText();
+				author = txtauthor.getText();
+				
+				
+				
+				
+				 try {
+					 
+						pst = con.prepareStatement("insert into book(name,edition,price ,author)values(?,?,?,?)");
+						pst.setString(1, bname);
+						pst.setString(2, edition);
+						pst.setString(3, price);
+						pst.setString(4, author);
+						pst.executeUpdate();
+						
+						JOptionPane.showMessageDialog(null, "The book has been added successfully ");
+						  table_load();
+							           
+						txtbname.setText("");
+						txtedition.setText("");
+						txtprice.setText("");
+						txtauthor.setText("");
+						txtbname.requestFocus();
+					   }catch (SQLException e1) 
+			        {
+							
+							e1.printStackTrace();
+				
+				
+			}
+			}
+		});
+		
+		
+		btn_Add.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btn_Add.setBounds(49, 431, 113, 30);
+		frame.getContentPane().add(btn_Add);
+		
+		JButton btn_Exit = new JButton("Exit");
+		btn_Exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btn_Exit.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btn_Exit.setBounds(305, 431, 113, 30);
+		frame.getContentPane().add(btn_Exit);
+		
+		JButton btn_Clear = new JButton("Clear");
+		btn_Clear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				txtbname.setText("");
+				txtedition.setText("");
+				txtprice.setText("");
+				txtauthor.setText("");
+				txtbname.requestFocus();
+				
+			}
+		});
+		btn_Clear.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btn_Clear.setBounds(182, 431, 113, 30);
+		frame.getContentPane().add(btn_Clear);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(442, 126, 412, 275);
+		frame.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(null, "Search", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(39, 86, 379, 65);
+		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel_1_3 = new JLabel("Book ID");
+		lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1_3.setBounds(27, 10, 79, 45);
+		panel_1.add(lblNewLabel_1_3);
+		
+		txtBId = new JTextField();
+		txtBId.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				
+				try {
+			          
+		            String id = txtBId.getText();
+		 
+		                pst = con.prepareStatement("select name,edition,price,author from book where id = ?");
+		                pst.setString(1, id);
+		                ResultSet rs = pst.executeQuery();
+		 
+		            if(rs.next()==true)
+		            {
+		              
+		                String name = rs.getString(1);
+		                String edition = rs.getString(2);
+		                String price = rs.getString(3);
+		                String author = rs.getString(4);
+		                
+		                
+		                txtbname.setText(name);
+		                txtedition.setText(edition);
+		                txtprice.setText(price);
+		                txtauthor.setText(author);
+		                
+		                
+		            }  
+		            else
+		            {
+		             txtbname.setText("");
+		             txtedition.setText("");
+		             txtprice.setText("");
+		             txtauthor.setText("");
+		                
+		            }
+		            
+		 
+		 
+		        }
+		catch (SQLException ex) {
+		          
+		        }
+				
+				
+				
+				
+			}
+		});
+		txtBId.setColumns(10);
+		txtBId.setBounds(122, 20, 215, 30);
+		panel_1.add(txtBId);
+		
+		JButton btn_Delete = new JButton("Delete");
+		btn_Delete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String bid;
+				bid  = txtBId.getText();
+				try {
+				pst = con.prepareStatement("delete from book where id =?");
+				    pst.setString(1, bid);
+				    pst.executeUpdate();
+				    JOptionPane.showMessageDialog(null, "Record Delete !");
+				    table_load();
+				  
+				    txtbname.setText("");
+				    txtedition.setText("");
+				    txtprice.setText("");
+				    txtauthor.setText("");
+				    txtbname.requestFocus();
+				}
+				
+				    catch (SQLException e1) {
+				e1.printStackTrace();
+				}
+			}
+		});
+		
+		
+		
+		btn_Delete.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btn_Delete.setBounds(741, 86, 113, 30);
+		frame.getContentPane().add(btn_Delete);
+		
+		
+		
+		
+		
+		JButton btn_Update = new JButton("Update");
+		btn_Update.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String bname,edition,price,bid , author;
+				bname = txtbname.getText();
+				edition = txtedition.getText();
+				price = txtprice.getText();
+				author = txtauthor.getText();
+			
+				bid  = txtBId.getText();
+				try {
+				pst = con.prepareStatement("update book set name= ?,edition=?,price=? , author=? where id =?");
+				pst.setString(1, bname);
+				            pst.setString(2, edition);
+				            pst.setString(3, price);
+				            pst.setString(4, author);
+				            pst.setString(5, bid);
+				            pst.executeUpdate();
+				            JOptionPane.showMessageDialog(null, "Record Update !");
+				            table_load();
+				          
+				            txtbname.setText("");
+				            txtedition.setText("");
+				            txtprice.setText("");
+				            txtauthor.setText("");
+				            txtbname.requestFocus();
+				}
+				 
+				            catch (SQLException e1) {
+				e1.printStackTrace();
+				}
+			}
+		});
+		
+		btn_Update.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btn_Update.setBounds(442, 86, 113, 30);
+		frame.getContentPane().add(btn_Update);
+	}
+}

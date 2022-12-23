@@ -1,0 +1,76 @@
+package bookRepoImp;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import bookRepository.BookRepository;
+import entities.Book;
+
+public class BookRepoImp extends UnicastRemoteObject implements BookRepository  {
+
+	private Connection con ; 
+	private PreparedStatement pst ;	
+	private ResultSet res ; 
+	
+	
+	protected BookRepoImp() throws RemoteException {
+		super();
+		
+	}
+
+	@Override
+	public void Connect() throws RemoteException {
+		 try {
+	            Class.forName("com.mysql.cj.jdbc.Driver");
+	            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/javacrud", "root","");
+	        }
+	        catch (ClassNotFoundException ex)
+	        {
+	          ex.printStackTrace();
+	        }
+	        catch (SQLException ex)
+	        {
+	            ex.printStackTrace();
+	        }
+	 
+
+	}
+
+	@Override
+	public int AddBook(String name, String edition, String price, String Author) throws RemoteException {
+		
+		return 0;
+	}
+
+	@Override
+	public int UpdateBook(String name, String edition, String price, String Author) throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Book GetById() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int DeleteById(String id) throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ResultSet GetAll() throws RemoteException {
+		pst = con.prepareStatement("select * from book");
+		res = pst.executeQuery();
+		return res;
+	}
+
+}

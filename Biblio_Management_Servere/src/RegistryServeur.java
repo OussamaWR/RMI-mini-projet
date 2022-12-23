@@ -1,0 +1,24 @@
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+import bookRepoImp.BookRepoImp;
+import bookRepository.BookRepository;
+
+public class RegistryServeur {
+
+	public static void main(String[] args) {
+
+		try {
+		 BookRepository bookRepository = new BookRepoImp();
+			
+		 Registry registry = LocateRegistry.createRegistry(1096);
+			 
+		 registry.rebind("bookservices",bookRepository);
+		 System.out.println("server is Run ");
+			 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+}

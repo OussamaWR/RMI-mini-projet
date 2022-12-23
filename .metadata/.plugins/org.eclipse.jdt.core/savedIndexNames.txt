@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+D:\Info3\Java jghal\Colle_Project\.metadata\.plugins\org.eclipse.jdt.core
+4048290880.index
+1271208515.index
+2146276130.index
+1865797976.index
+1544761704.index
+2238733732.index

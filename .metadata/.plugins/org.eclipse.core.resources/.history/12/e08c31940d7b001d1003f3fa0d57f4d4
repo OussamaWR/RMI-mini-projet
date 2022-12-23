@@ -1,0 +1,53 @@
+package bookRepoImp;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+
+import bookRepository.BookRepository;
+import entities.Book;
+
+public class BookRepoImp extends UnicastRemoteObject implements BookRepository  {
+
+	protected BookRepoImp() throws RemoteException {
+		super();
+		
+	}
+
+	@Override
+	public void Connect() throws RemoteException {
+	
+
+	}
+
+	@Override
+	public int AddBook(String name, String edition, String price, String Author) throws RemoteException {
+		
+		return 0;
+	}
+
+	@Override
+	public int UpdateBook(String name, String edition, String price, String Author) throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Book GetById() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int DeleteById(String id) throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Book> GetAll() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,8 @@
+package bookRepository;
+
+import java.rmi.Remote;
+
+public interface BookRepository extends Remote {
+	
+
+}
